@@ -13,4 +13,7 @@ registrummetadata <- registrummetadata %>% pivot_wider(names_from = field, value
 dir.create("NLSParishRegisterTexts")
 
 ia_search(Registrumquery, num_results = 19) %>% ia_get_items %>% ia_files %>% filter(type == "txt") %>% group_by(id) %>% ia_download(dir = "NLSParishRegisterTexts", overwrite = FALSE,) %>% glimpse()
-
+library(readtext)
+file_paths <- system.file("NLSParishRegisterTexts/")
+NLStxtfull <- readtext(paste("NLSParishRegisterTexts/", "*.txt", sep = ""))
+NLStxtmeta <- full_join
