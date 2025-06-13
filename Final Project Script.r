@@ -27,3 +27,8 @@ head(stopwords::data_stopwords_ancient)
 
 tokenized.NLS.full <- NLStxtfull %>% unnest_tokens(word, text)
 tokenized.NLS.full <- tokenized.NLS.full %>% anti_join(stop_words)
+tokenized.NLS.full.stopwords <- tokenized.NLS.full %>% anti_join(stopwords(language = "la", source = "ancient"))
+latinstopwords <- as.data.frame(stopwords(language = "la", source = "ancient"))
+tokenized.NLS.full.stopwords <- tokenized.NLS.full %>% anti_join(latinstopwords, tokenized.NLS.full, join_by(stopwords(language = "la", source = "ancient") = word))
+??anti_join
+stopwordslist <- latinstopwords %>% cross_join(stopwords(language = "la", source = "ancient"), stop_words())
