@@ -57,3 +57,9 @@ wordcountmandh <- magicandheresyTF %>% count(doc_id, word, sort = T) %>% group_b
 write.csv(wordcountsexuality, "wordcountsexuality.csv", row.names = FALSE, quote = FALSE)
 write.csv(wordcountwandg, "wordcountwomenandgender.csv", row.names = FALSE, quote = FALSE)
 write.csv(wordcountmandh, "wordcountmagicandheresy.csv", row.names = FALSE, quote = FALSE)
+
+<PLAGUE WORDS ADDED>
+<diseasetf: morbus, aegrotatio, pestilentia, febris, 
+diseasetf <- tokenized.NLS.full.stopwords %>% filter(word == "morbus" | word == "aegrotatio" | word == "pestilentia" | word == "febris")
+wordcountdisease <- diseasetf %>% count(doc_id, word, sort = T) %>% group_by(doc_id)
+<not productive> 
