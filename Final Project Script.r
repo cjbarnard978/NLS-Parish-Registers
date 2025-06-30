@@ -23,12 +23,19 @@ write.csv(NLStxtmeta, "NLStxtmeta.csv", row.names=FALSE, quote=FALSE)
 write.csv(NLStxtfull, "NLStextfull.csv", row.names=FALSE, quote=FALSE)
 
 library("stopwords")
+library(quanteda)
+??stopwords
 head(stopwords::data_stopwords_ancient)
+
+latinstopwords <- as_tibble(stopwords(language = "la", source = "ancient", simplify = TRUE))
+
 
 tokenized.NLS.full <- NLStxtfull %>% unnest_tokens(word, text)
 tokenized.NLS.full <- tokenized.NLS.full %>% anti_join(stop_words)
 tokenized.NLS.full.stopwords <- tokenized.NLS.full %>% anti_join(stopwords(language = "la", source = "ancient"))
+
 latinstopwords <- as.data.frame(stopwords(language = "la", source = "ancient"))
+
 tokenized.NLS.full.stopwords <- tokenized.NLS.full %>% anti_join(latinstopwords, tokenized.NLS.full, join_by(stopwords(language = "la", source = "ancient") = word))
 ??anti_join
 library(dplyr)
@@ -65,12 +72,44 @@ wordcountdisease <- diseasetf %>% count(doc_id, word, sort = T) %>% group_by(doc
 <not productive> 
 
 Topic Modeling 
+library(tidytext)
+library(tidyverse)
+library(readtext)
+library(tm)
+library(topicmodels)
+
+#<code pulled from 8500 worksheet 6-couldn't remember which package to open>
+
 NLSstringdetech <- tokenized.NLS.full.stopwords %>% filter(str_detect(word, "[a-z']$"))
 file_paths <- system.file("GlasgowAreaTexts/")
 Glasgowtexts <- readtext(paste("GlasgowAreaTexts/", "*.txt", sep=""))
-Glasgowtexts <- Glasgowtexts %>% unnest_tokens(word, text) %>% anti_join(completestopwords) 
+Glasgowtexts <- Glasgowtexts %>% unnest_tokens(word, text) 
+Glasgowtexts %>% anti_join(stop_words)
+Glasgowtexts <- Glasgowtexts %>% anti_join(completestopwords)
+??anti_join
 glasgowtextsDTM <- Glasgowtexts %>% count(doc_id, word) %>% cast_dtm(doc_id, word, n)
 glasgowtextslda <- LDA(glasgowtextsDTM, k = 5, control = list(seed = 12345))
-LDA()
-??LDA()
+glasgowtextslda
+
+glasgowtopics <- tidy(glasgowtextslda, matrix = "beta")
+head(glasgowtopics)
+
+Gtopic1 <- glasgowtopics %>% filter(topic == 1) %>% arrange(desc(beta)) %>% slice(1:20)
+Gtopic2 <- glasgowtopics %>% filter(topic == 2) %>% arrange(desc(beta)) %>% slice(1:20)
+Gtopic3 <- glasgowtopics %>% filter(topic == 3) %>% arrange(desc(beta)) %>% slice(1:20)
+Gtopic4 <- glasgowtopics %>% filter(topic == 4) %>% arrange(desc(beta)) %>% slice(1:20)
+Gtopic5 <- glasgowtopics %>% filter(topic == 5) %>% arrange(desc(beta)) %>% slice(1:20)
+
+
+write.csv(Glasgowtexts, "glasgowtexts.csv", row.names = FALSE, quote = FALSE)
+write.csv(Gtopic1, "glasgowtopic1.csv", row.names = FALSE, quote = FALSE)
+write.csv(Gtopic2, "glasgowtopic2", row.names = FALSE, quote = FALSE )
+write.csv(Gtopic3, "glasgowtopic3.csv", row.names = FALSE, quote = FALSE )
+write.csv(Gtopic4, "glasgowtopic4.csv", row.names = FALSE, quote = FALSE)
+write.csv(Gtopic5, "glasgowtopic5.csv", row.names = FALSE, quote = FALSE)
+
+<Bishopric of Moray>
+
+
+
 <Brechin and Arbroath>
