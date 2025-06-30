@@ -63,3 +63,14 @@ write.csv(wordcountmandh, "wordcountmagicandheresy.csv", row.names = FALSE, quot
 diseasetf <- tokenized.NLS.full.stopwords %>% filter(word == "morbus" | word == "aegrotatio" | word == "pestilentia" | word == "febris")
 wordcountdisease <- diseasetf %>% count(doc_id, word, sort = T) %>% group_by(doc_id)
 <not productive> 
+
+Topic Modeling 
+NLSstringdetech <- tokenized.NLS.full.stopwords %>% filter(str_detect(word, "[a-z']$"))
+file_paths <- system.file("GlasgowAreaTexts/")
+Glasgowtexts <- readtext(paste("GlasgowAreaTexts/", "*.txt", sep=""))
+Glasgowtexts <- Glasgowtexts %>% unnest_tokens(word, text) %>% anti_join(completestopwords) 
+glasgowtextsDTM <- Glasgowtexts %>% count(doc_id, word) %>% cast_dtm(doc_id, word, n)
+glasgowtextslda <- LDA(glasgowtextsDTM, k = 5, control = list(seed = 12345))
+LDA()
+??LDA()
+<Brechin and Arbroath>
