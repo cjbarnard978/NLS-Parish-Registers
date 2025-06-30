@@ -108,6 +108,14 @@ write.csv(Gtopic3, "glasgowtopic3.csv", row.names = FALSE, quote = FALSE )
 write.csv(Gtopic4, "glasgowtopic4.csv", row.names = FALSE, quote = FALSE)
 write.csv(Gtopic5, "glasgowtopic5.csv", row.names = FALSE, quote = FALSE)
 
+glasgowtextslda3 <- LDA(glasgowtextsDTM, k = 3, control = list(seed = 12345))
+glasgowtopics3 <- tidy(glasgowtextslda3, matrix = "beta")
+head(glasgowtopics3)
+View(glasgowtopics3)
+Gtopics1.3 <- glasgowtopics3 %>% filter(topic == 1) %>% arrange(desc(beta))
+Gtopics2.3 <- glasgowtopics3 %>% filter(topic == 2) %>% arrange(desc(beta))
+Gtopics3.3 <- glasgowtopics3 %>% filter(topic == 3) %>% arrange(desc(beta))
+
 <Bishopric of Moray>
 
 
