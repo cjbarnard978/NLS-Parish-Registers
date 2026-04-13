@@ -1,16 +1,10 @@
-install.packages("tidytext")
-install.packages("tidyverse")
-install.packages("readtext")
 library(tidyverse)
 library(tidytext)
 library(readtext)
 file_paths <- system.file("MonasticTexts/")
 monastictexts <- readtext(paste("MonasticTexts/", "*.txt", sep = ""))
 
-
-install.packages("stopwords")
 library(stopwords)
-install.packages("quanteda")
 library(quanteda)
 ??stopwords
 head(stopwords::data_stopwords_ancient)
@@ -21,7 +15,6 @@ tokenized.MT.full <- monastictexts %>% unnest_tokens(word, text) %>% as_tibble()
 tokenized.MT.full <- tokenized.MT.full %>% anti_join(stop_words)
 tokenized.MT.full.stopwords <- tokenized.MT.full %>% anti_join(latinstopwords)
 
-install.packages("dplyr")
 library(dplyr)
 # Combine English and Latin stopwords, making sure both have a 'word' column
 englishstopwords <- stop_words %>% select(word)
