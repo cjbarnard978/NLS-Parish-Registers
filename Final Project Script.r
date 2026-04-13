@@ -24,7 +24,7 @@ tokenized.MT.full.stopwords <- tokenized.MT.full %>% anti_join(stopwords(languag
 
 latinstopwords <- as.data.frame(stopwords(language = "la", source = "ancient"))
 
-tokenized.MT.full.stopwords <- tokenized.MT.full %>% anti_join(latinstopwords, tokenized.MT.full, join_by(stopwords(language = "la", source = "ancient")))
+tokenized.MT.full.stopwords <- tokenized.MT.full %>% anti_join(latinstopwords, tokenized.MT.full, join_by(stopwords(language = "la", source = "ancient", by = join_by(word))))
 ??anti_join
 
 install.packages("dplyr")
