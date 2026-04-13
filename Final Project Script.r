@@ -15,22 +15,17 @@ library(quanteda)
 ??stopwords
 head(stopwords::data_stopwords_ancient)
 
-latinstopwords <- as_tibble(stopwords(language = "la", source = "ancient", simplify = TRUE))
-
+latinstopwords <- tibble(word = stopwords(language = "la", source = "ancient", simplify = TRUE))
 
 tokenized.MT.full <- monastictexts %>% unnest_tokens(word, text) %>% as_tibble()
 tokenized.MT.full <- tokenized.MT.full %>% anti_join(stop_words)
-tokenized.MT.full.stopwords <- tokenized.MT.full %>% anti_join(stopwords(language = "la", source = "ancient"))
-
-latinstopwords <- as.data.frame(stopwords(language = "la", source = "ancient"))
-
-tokenized.MT.full.stopwords <- tokenized.MT.full %>% anti_join(latinstopwords, tokenized.MT.full, join_by(stopwords(language = "la", source = "ancient")))
-??anti_join
+tokenized.MT.full.stopwords <- tokenized.MT.full %>% anti_join(latinstopwords)
 
 install.packages("dplyr")
 library(dplyr)
-englishstopwords <- as.data.frame(stop_words)
-completestopwords <- merge(englishstopwords, latinstopwords, all.x = "TRUE", copy = TRUE)
+# Combine English and Latin stopwords, making sure both have a 'word' column
+englishstopwords <- stop_words %>% select(word)
+completestopwords <- bind_rows(englishstopwords, latinstopwords) %>% distinct()
 tokenized.MT.full.stopwords <- tokenized.MT.full %>% anti_join(completestopwords)
 
 
