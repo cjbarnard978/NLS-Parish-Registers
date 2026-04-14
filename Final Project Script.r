@@ -21,12 +21,16 @@ englishstopwords <- stop_words %>% select(word)
 completestopwords <- bind_rows(englishstopwords, latinstopwords) %>% distinct()
 tokenized.MT.full.stopwords <- tokenized.MT.full %>% anti_join(completestopwords)
 
-install.packages("tm")
-install.packages("topicmodels")
-library(tm)
-library(topicmodels)
-data.frame("tokenized.MT.full.stopwords")
-monastic_lda <- LDA("tokenized.MT.full.stopwords", k = 5, control = list())
-monastic_lda
+tokenized.MT.full.stopwords %>% count(word, sort = TRUE)
+install.packages("ggplot2")
+library(ggplot2)
+tokenized.MT.full.stopwords %>% count(word, sort = TRUE) %>% filter(n > 1000) %>% ggplot(aes(x = word, y = n, ylim = 5000)) + geom_point()
+
+file_paths <- system.file("EnglishTexts/")
+monasticonhibernicum <- readtext(paste("EnglishTexts/", "*.txt", sep = ""))
+tokenizedMH <- monasticonhibernicum %>% unnest_tokens(word, text) %>% as_tibble()
+tokenizedMH <- tokenizedMH %>% anti_join(stop_words)
+tokenizedMH %>% count(word, sort = TRUE)
+tokenizedMH %>% count(word, sort = TRUE) %>% filter(n > 350) %>% ggplot(aes(x = word, y = n, ylim = 5000)) + geom_point()
 
 
