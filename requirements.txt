@@ -1,0 +1,6 @@
+install.packages("tidytext")
+install.packages("tidyverse")
+install.packages("readtext")
+install.packages("stopwords") 
+install.packages("quanteda") 
+install.packages("dplyr")

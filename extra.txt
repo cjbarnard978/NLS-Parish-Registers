@@ -1,0 +1,25 @@
+library(tidytext)
+library(tidyverse)
+install.packages("tm")
+install.packages("topicmodels")
+library(tm)
+library(topicmodels)
+
+
+49 x 12
+Fixed! The issue was that stopwords(language = "la", source = "ancient") returns a character vector, not a data frame. anti_join() needs a data frame with a column named "word" to match on.
+
+Changes made:
+
+Converted Latin stopwords to a tibble with proper word column: tibble(word = stopwords(...))
+Removed the duplicate and incorrect join syntax
+Simplified the English/Latin stopwords merge using bind_rows() instead of merge() to concatenate them properly
+Try running the script again—it should work now!
+    copilot fix for THIS error:
+    > tokenized.MT.full.stopwords <- tokenized.MT.full %>% anti_join(stopwords(language = "la", source = "ancient"))
+Error in `auto_copy()`:
+! `x` and `y` must share the same src.
+ℹ `x` is a <tbl_df/tbl/data.frame> object.
+ℹ `y` is a character vector.
+ℹ Set `copy = TRUE` if `y` can be copied to the same source as `x` (may be slow).
+https://www.tidytextmining.com/tfidf

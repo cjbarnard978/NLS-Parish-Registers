@@ -21,6 +21,12 @@ englishstopwords <- stop_words %>% select(word)
 completestopwords <- bind_rows(englishstopwords, latinstopwords) %>% distinct()
 tokenized.MT.full.stopwords <- tokenized.MT.full %>% anti_join(completestopwords)
 
-
+install.packages("tm")
+install.packages("topicmodels")
+library(tm)
+library(topicmodels)
+data.frame("tokenized.MT.full.stopwords")
+monastic_lda <- LDA("tokenized.MT.full.stopwords", k = 5, control = list())
+monastic_lda
 
 
