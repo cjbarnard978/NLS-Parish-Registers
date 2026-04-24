@@ -33,4 +33,6 @@ tokenizedMH <- tokenizedMH %>% anti_join(stop_words)
 tokenizedMH %>% count(word, sort = TRUE)
 tokenizedMH %>% count(word, sort = TRUE) %>% filter(n > 350) %>% ggplot(aes(x = word, y = n, ylim = 5000)) + geom_point()
 
+#Topic Models
+
 

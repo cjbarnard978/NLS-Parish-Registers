@@ -6,6 +6,14 @@ library(tm)
 library(topicmodels)
 
 
+install.packages("tm")
+install.packages("topicmodels")
+library(tm)
+library(topicmodels)
+data.frame("tokenized.MT.full.stopwords")
+monastic_lda <- LDA("tokenized.MT.full.stopwords", k = 5, control = list())
+monastic_lda 
+
 49 x 12
 Fixed! The issue was that stopwords(language = "la", source = "ancient") returns a character vector, not a data frame. anti_join() needs a data frame with a column named "word" to match on.
 
@@ -23,3 +31,8 @@ Error in `auto_copy()`:
 ℹ `y` is a character vector.
 ℹ Set `copy = TRUE` if `y` can be copied to the same source as `x` (may be slow).
 https://www.tidytextmining.com/tfidf
+https://stackoverflow.com/questions/74909323/r-ggplot-colour-and-fill-arguments 
+https://github.com/rstudio/cheatsheets/blob/main/data-visualization.pdf 
+https://www.tidytextmining.com/tidytext 
+https://www.geeksforgeeks.org/r-language/how-to-fix-values-not-appearing-in-ggplot-plot-in-r/ 
+https://stackoverflow.com/questions/35463275/r-and-ggplot2-plot-with-factors-on-both-axis
