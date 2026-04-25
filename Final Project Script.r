@@ -8,7 +8,7 @@ library(stopwords)
 library(quanteda)
 ??stopwords
 head(stopwords::data_stopwords_ancient)
-latinstopwords <- tibble(word = stopwords(language = "la", source = "ancient", simplify = TRUE))
+latinstopwords <- tibble(word = stopwords::data_stopwords_ancient$la)
 tokenized.MT.full <- monastictexts %>% unnest_tokens(word, text) %>% as_tibble()
 tokenized.MT.full <- tokenized.MT.full %>% anti_join(stop_words) 
 tokenized.MT.full.stopwords <- tokenized.MT.full %>% anti_join(latinstopwords)
