@@ -36,3 +36,6 @@ https://github.com/rstudio/cheatsheets/blob/main/data-visualization.pdf
 https://www.tidytextmining.com/tidytext 
 https://www.geeksforgeeks.org/r-language/how-to-fix-values-not-appearing-in-ggplot-plot-in-r/ 
 https://stackoverflow.com/questions/35463275/r-and-ggplot2-plot-with-factors-on-both-axis
+
+install.packages("reshape2") 
+install.packages("ggplot2") 

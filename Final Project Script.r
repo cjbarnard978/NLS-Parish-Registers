@@ -16,19 +16,17 @@ tokenized.MT.full.stopwords <- tokenized.MT.full %>% anti_join(latinstopwords)
 library(dplyr)
 # Combine English and Latin stopwords, making sure both have a 'word' column
 englishstopwords <- (stop_words) %>% select(word)
-customstopwords <- as_tibble("customstopwords.csv")
+customstopwords <- as_tibble(read.csv("customstopwords.csv"))
 completestopwords <- bind_rows(englishstopwords, latinstopwords, customstopwords) %>% distinct()
 tokenized.MT.full.stopwords <- tokenized.MT.full %>% anti_join(completestopwords)
-
 tokenized.MT.full.stopwords %>% count(word, sort = TRUE)
-install.packages("ggplot2")
 library(ggplot2)
 tokenized.MT.full.stopwords %>% count(word, sort = TRUE) %>% filter(n > 1000) %>% ggplot(aes(x = word, y = n, ylim = 5000)) + geom_point()
 
 file_paths <- system.file("EnglishTexts/")
 monasticonhibernicum <- readtext(paste("EnglishTexts/", "*.txt", sep = ""))
 tokenizedMH <- monasticonhibernicum %>% unnest_tokens(word, text) %>% as_tibble()
-tokenizedMH <- tokenizedMH %>% anti_join(stop_words)
+tokenizedMH <- tokenizedMH %>% anti_join(completestopwords)
 tokenizedMH %>% count(word, sort = TRUE)
 tokenizedMH %>% count(word, sort = TRUE) %>% filter(n > 350) %>% ggplot(aes(x = word, y = n, ylim = 5000)) + geom_point()
 
@@ -37,9 +35,8 @@ tokenizedMH %>% count(word, sort = TRUE) %>% filter(n > 350) %>% ggplot(aes(x = 
 #Latin
 library(tm)
 library(topicmodels)
-install.packages("reshape2")
 library(reshape2)
-tidy.MT <- tokenized.MT.full.stopwords %>% filter('ocr', 'png', 'results') %>% filter(str_detect(word, "[a-z]$")) %>% count(doc_id, word)
+tidy.MT <- tokenized.MT.full.stopwords %>% filter(str_detect(word, "[a-z]$")) %>% count(doc_id, word)
 MT.dtm <- tidy.MT %>% count(doc_id, word) %>% cast_dtm(doc_id, word, n)
 MT.lda <- LDA(MT.dtm, k = 35, control = list(seed = 12345))
 MT.lda
