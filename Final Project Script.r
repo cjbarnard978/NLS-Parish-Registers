@@ -45,4 +45,12 @@ head(MT.topics)
 topterms.MT <- MT.topics %>% arrange(desc(beta)) %>% group_by(topic) %>% slice(1:7)
 topterms.MT %>% mutate(term = reorder_within(term, beta, topic)) %>%
 ggplot(aes(beta, term, fill = factor(topic))) + geom_col(show.legend = FALSE) + facet_wrap(~ topic, scales = "free") + scale_y_reordered()
+
 #English
+tidy.MH <- tokenizedMH %>% filter(str_detect(word, "[a-z]$")) %>% count(doc_id, word)
+MH.dtm <-tidy.MH %>% count(doc_id, word) %>% cast_dtm(doc_id, word, n)
+MH.lda <- LDA(MH.dtm, k = 15, control = list(seed = 12345))
+MH.topics <-tidy(MH.lda, matrix = "beta")
+topterms.MH <- MH.topics %>% arrange(desc(beta)) %>% group_by(topic) %>% slice(1:7)
+topterms.MH %>% mutate(term = reorder_within(term, beta, topic)) %>%
+ggplot(aes(beta, term, fill = factor(topic))) + geom_col(show.legend = FALSE) + facet_wrap(~ topic, scales = "free") + scale_y_reordered()
