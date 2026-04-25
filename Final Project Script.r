@@ -38,10 +38,10 @@ library(topicmodels)
 library(reshape2)
 tidy.MT <- tokenized.MT.full.stopwords %>% filter(str_detect(word, "[a-z]$")) %>% count(doc_id, word)
 MT.dtm <- tidy.MT %>% count(doc_id, word) %>% cast_dtm(doc_id, word, n)
-MT.lda <- LDA(MT.dtm, k = 35, control = list(seed = 12345))
+MT.lda <- LDA(MT.dtm, k = 40, control = list(seed = 12345))
 MT.lda
 MT.topics <- tidy(MT.lda, matrix = "beta")
 head(MT.topics)
-topterms.MT <- MT.topics %>% arrange(desc(beta)) %>% group_by(topic) %>% slice(1:10)
+topterms.MT <- MT.topics %>% arrange(desc(beta)) %>% group_by(topic) %>% slice(1:7)
 topterms.MT %>% mutate(term = reorder_within(term, beta, topic)) %>%
 ggplot(aes(beta, term, fill = factor(topic))) + geom_col(show.legend = FALSE) + facet_wrap(~ topic, scales = "free") + scale_y_reordered()
